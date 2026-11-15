@@ -32,11 +32,13 @@ export function frobeniusError(A: Matrix, B: Matrix): number {
  * Signature:
  *   tailEnergy(S: ArrayLike<number>, k: number) => number
  *   - S: singular values, descending; k counts the layers kept (k = 0 keeps none)
+ *   - returns the error itself, in the same units as frobeniusError (not its square), so the
+ *     two can be plotted on the same axis
  *
  * On paper first:
  *   - Write A − A_k as a sum of layers. Which layers? Then apply the fact from frobeniusError.
  *   - Why is A_k the best rank-k matrix and not just a good one? (Sketch: for any rank-k B,
- *     its null space has dimension n − k and meets span(v_1 … v_{k+1}) in a non-zero vector.)
+ *     its null space has dimension at least n − k, so it meets span(v_1 … v_{k+1}) in a non-zero vector.)
  *   - Predict: for an image whose σ_i decay like 1/i, how does the error at k fall as k grows?
  */
 export function tailEnergy(S: ArrayLike<number>, k: number): number {
