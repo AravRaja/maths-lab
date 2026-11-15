@@ -44,7 +44,7 @@ Notation: a rollout has T steps; `rewards[t]` is r_t; `dones[t]` is true when th
 - `npx vitest run src/projects/ppo-arena/core/__tests__/gae.test.ts`
 - *Predict before you run it:* in the lab, set critic error to 0. What will the λ = 1 line look like, and why? (Hint: what is the critic in this lab when the error is 0?) Then turn the error up and predict which of the three lines moves most.
 
-**What lights up:** section 04, *Borrowing from the future*. The credit kernel (γλ)^l over the ribbon, three advantage lines (λ = 0, your λ, λ = 1) and the readouts. In the arena, your advantages drive every policy update, and Â + V_old becomes the critic's target.
+**What lights up:** section 04, *Borrowing from the future* (its critic is built from M1's returns, so this lab needs `discountedReturns` too). The credit kernel (γλ)^l over the ribbon, three advantage lines (λ = 0, your λ, λ = 1) and the readouts. In the arena, your advantages drive every policy update, and Â + V_old becomes the critic's target.
 
 ---
 
@@ -56,7 +56,7 @@ Notation: a rollout has T steps; `rewards[t]` is r_t; `dones[t]` is true when th
 **On paper first**
 1. Show softmax(z + c) = softmax(z) for any constant c. Which c makes exp never overflow? (Log-sum-exp.)
 2. Two actions: write π(right) as a function of z_right − z_left only. Which function is it?
-3. Derive ∂ log π(a) / ∂ z_b = 1[a = b] − π(b). You won't code it, but it is the policy-gradient signal the network receives.
+3. Derive ∂ log π(a) / ∂ z_b for b = a and for b ≠ a, and write both cases as one expression. You won't code it, but it is the policy-gradient signal the network receives.
 4. Entropy: which policy maximises H, and what is the maximum for K actions? For a near one-hot policy, 0 · log 0 appears. How does writing H through log-probs avoid the NaN?
 
 **Check**

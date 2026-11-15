@@ -14,7 +14,7 @@ const FILE = "src/projects/ppo-arena/core/surrogate.ts";
  * On paper first:
  *  - Sketch L^CLIP against r for Â > 0, then for Â < 0. Mark 1 − ε and 1 + ε. Where is it flat?
  *  - Where is the gradient with respect to r zero? Say in words why that stops a big update.
- *  - Why the min and not just the clipped term? (Hint: which side is pessimistic when Â < 0 and r < 1 − ε?)
+ *  - Why the min and not just the clipped term? (Hint: compare the two terms when Â < 0 and r > 1 + ε, and when Â > 0 and r < 1 − ε.)
  *  - At r = 1 what are the value and the slope? Compare with the vanilla policy-gradient objective.
  */
 export function clippedSurrogate(ratio: number, advantage: number, epsilon: number): number {
