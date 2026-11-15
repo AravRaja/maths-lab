@@ -66,7 +66,12 @@ export function TdLab() {
           setFrame(f);
           if (f.truth) setTruth(f.truth);
           const rms = f.rms;
-          if (rms != null) setCurve((c) => [...c.slice(-400), [f.episode, rms]]);
+          // Keep the whole run (so the early fall stays visible): halve the resolution when it gets long.
+          if (rms != null)
+            setCurve((c) => {
+              const next: [number, number][] = [...c, [f.episode, rms]];
+              return next.length > 400 ? next.filter((_, i) => i % 2 === 0 || i === next.length - 1) : next;
+            });
         },
       );
       setMissing(null);

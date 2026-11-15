@@ -48,7 +48,7 @@ Everything in this project is built from one move: look one step ahead and trust
 **Derive on paper**
 - The Bellman optimality equation: V*(s) = maxₐ Σₛ′ P(s′|s,a) [r + γV*(s′)]. Where does the max come from, compared with M2?
 - Prove |maxₐ f(a) − maxₐ g(a)| ≤ maxₐ |f(a) − g(a)|. Use it to show T* is a γ-contraction.
-- So ‖V_k − V*‖∞ ≤ γᵏ‖V_0 − V*‖∞. How many sweeps to shrink the error by 10⁻⁶ at γ = 0.9? At γ = 0.99?
+- So ‖V_k − V*‖∞ ≤ γᵏ‖V_0 − V*‖∞. How many sweeps to shrink the error by a factor of 10⁶ at γ = 0.9? At γ = 0.99?
 - A stopping rule: if ‖V_{k+1} − V_k‖∞ < ε, show ‖V_{k+1} − V*‖∞ ≤ γε / (1 − γ).
 - On a deterministic corridor with only a goal reward, which cells are non-zero after k sweeps from V = 0? Write V* in closed form there.
 

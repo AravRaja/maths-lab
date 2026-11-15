@@ -33,7 +33,7 @@ export function ExploreDial() {
   }, [eps]);
 
   const bars = (f: number[], ghost = false) => (
-    <div className="flex h-40 items-end gap-3" role="img" aria-label="Action frequencies">
+    <div className="flex h-40 gap-3" role="img" aria-label="Action frequencies">
       {f.map((p, a) => (
         <div key={a} className="flex flex-1 flex-col items-center gap-1">
           <span className="type-wide text-xs tabular-nums">{ghost ? "" : (p * 100).toFixed(0) + "%"}</span>
