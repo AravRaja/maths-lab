@@ -1,11 +1,13 @@
 import type { ProjectMeta } from "../types";
+import { CORES } from "./core";
 
 export const meta: ProjectMeta = {
   slug: "flowfield",
   title: "Flow field",
-  tagline: "Flow matching in 2D: clouds of noise stream along a learned velocity field into shapes, then into action sequences.",
+  tagline:
+    "Flow matching from scratch. Draw a shape and watch a cloud of noise stream into it along a field trained live in your browser, then point the same maths at a robot arm's next eight moves.",
   week: "Weeks 9–10",
-  topic: "Flow matching · ODE sampling",
-  status: "building",
-  cores: [],
+  topic: "Flow matching · ODE sampling · guidance",
+  status: "live",
+  cores: CORES,
 };
