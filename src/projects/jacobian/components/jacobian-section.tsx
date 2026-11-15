@@ -212,8 +212,8 @@ export function JacobianSection() {
         <ManipMap q={q} onPick={(q1, q2) => { setPlay(false); const nq = q.slice(); nq[1] = q1; nq[2] = q2; live.current.q = nq; setQ(nq); }} />
       )}
       <Predict>
-        Slide the elbow to 0 so the forearm lines up with the upper arm. Which way can the tool <em>not</em> move any more,
-        and which singular value goes to zero? Look at the ellipsoid before you look at the numbers.
+        Slide the elbow and the wrist pitch to 0 so the whole arm is one straight line. Which way can the tool <em>not</em> move
+        any more, and which singular value goes to zero? Why is the elbow alone not enough? Look at the ellipsoid before you look at the numbers.
       </Predict>
     </div>
   );
@@ -278,12 +278,14 @@ function ManipMap({ q, onPick }: { q: number[]; onPick: (q2: number, q3: number)
       ctx.moveTo(x, y - 16);
       ctx.lineTo(x, y + 16);
       ctx.stroke();
-      // The stretched (elbow = 0) row is a ridge of zeros.
-      const y0 = (hi2 / (hi2 - lo2)) * height;
-      label(ctx, "elbow = 0", 6, y0 - 10, { alpha: 0.8 });
+      // With the wrist pitch straight, the stretched (elbow = 0) row is a ridge of zeros.
+      if (Math.abs(q[3]) < 0.05) {
+        const y0 = (hi2 / (hi2 - lo2)) * height;
+        label(ctx, "elbow = 0", 6, y0 - 10, { alpha: 0.8 });
+      }
     },
     { animate: false },
-    [map, q[1], q[2]],
+    [map, q[1], q[2], q[3]],
   );
 
   return (

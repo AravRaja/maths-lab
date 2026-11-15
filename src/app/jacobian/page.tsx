@@ -16,7 +16,7 @@ export default function Page() {
   return (
     <ProjectPage
       slug="jacobian"
-      title={<>Jaco<br />bian</>}
+      title="Jacobian"
       visual={<Hero />}
       actions={
         <>

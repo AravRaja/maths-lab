@@ -124,7 +124,7 @@ describe("kalmanUpdate", () => {
       [1, 0, 0, 0],
       [0, 1, 0, 0],
     ];
-    const R = matScale(eye(2), 1e-6); // a very sharp sensor makes the naive update lose PD-ness
+    const R = matScale(eye(2), 1e-6); // a very sharp sensor: P shrinks to ~1e-6, so sloppy rounding shows up
     let s = { x: [0, 0, 0, 0], P: matScale(eye(4), 100) };
     for (let k = 0; k < 500; k++) {
       s = kalmanPredict(s.x, s.P, F, Q);

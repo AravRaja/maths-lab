@@ -65,7 +65,7 @@ The order matters: M2 is built from M1's rotations, M3 differentiates M2, M4 inv
 
 **Check**
 - `npx vitest run src/projects/jacobian/core/__tests__/jacobian.test.ts`: every column checked against central finite differences of *your* `forwardKinematics` (linear rows from d(tool)/dq, angular rows from dR/dq Rᵀ = [ω]×), the hand-worked planar Jacobian, manipulability of diagonal and rank-deficient matrices, invariance under a rotation of task space, scaling as cᵐ, the planar two-link law, and the page's arm singular when it stands straight up.
-- Predict before you run it: on the page, slide the elbow to 0 so the forearm lines up with the upper arm. Which direction can the tool no longer move in, and which singular value collapses? Look at the ellipsoid first.
+- Predict before you run it: on the page, slide the elbow and the wrist pitch to 0 so the whole arm is one straight line. Which direction can the tool no longer move in, and which singular value collapses? Why is straightening the elbow alone not enough with six joints? Look at the ellipsoid first.
 
 **Unlocks**: the velocity ellipsoid on the hero, plus the *near singular* glitch; section 04, *Which way can it move?*: pick a joint and see its column as a spin axis and a tool-velocity arrow, a live finite-difference check, σ₁ σ₂ σ₃, w and the condition number; with `manipulability`, a dithered map of w over shoulder × elbow computed in a worker (tap it to jump there). The workspace cloud gets shaded by w.
 

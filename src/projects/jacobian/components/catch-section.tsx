@@ -206,7 +206,8 @@ export function CatchSection() {
   };
 
   const tail = (xs: number[]) => xs.filter(Number.isFinite).slice(-200);
-  const rms = (xs: number[]) => (xs.length ? Math.sqrt(xs.reduce((s, v) => s + v * v, 0) / xs.length) : 0);
+  const rms = (xs: number[]) => (xs.length ? Math.sqrt(xs.reduce((s, v) => s + v * v, 0) / xs.length) : NaN);
+  const mm = (v: number) => (Number.isFinite(v) ? `${(v * 1000).toFixed(0)} mm` : "—");
 
   return (
     <div className="flex flex-col gap-4">
@@ -228,8 +229,8 @@ export function CatchSection() {
         </div>
       </Sheet>
       <div className="grid grid-cols-2 gap-2">
-        <Readout label="Raw camera error" value={`${(rms(tail(hist.raw)) * 1000).toFixed(0)} mm`} sub="RMS, last 5 s" />
-        <Readout label="Filtered error" value={`${(rms(tail(hist.kf)) * 1000).toFixed(0)} mm`} sub="RMS, last 5 s" />
+        <Readout label="Raw camera error" value={mm(rms(tail(hist.raw)))} sub={cameraOn ? "RMS, last 5 s" : "camera off"} />
+        <Readout label="Filtered error" value={mm(rms(tail(hist.kf)))} sub="RMS, last 5 s" />
       </div>
       <Sheet>
         <p className="type-narrow mb-2 text-xs tracking-[0.2em] text-ink-soft uppercase">Error over the last 10 s (m)</p>

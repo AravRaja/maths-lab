@@ -22,7 +22,7 @@ const FILE = "src/projects/jacobian/core/kinematics.ts";
  *  - Draw a two-joint planar arm and compose the transforms by hand. Does Trans·Rot or Rot·Trans
  *    put the joint in the right place? What changes if you swap them?
  *  - Why multiply on the right? (Each new transform is described in the frame of the previous joint.)
- *  - All q = 0 for the arm on the page: every axis is z or y and every offset points up z.
+ *  - All q = 0 for the arm on the page: the axes are z, y, y, y, z, x and every offset points up z.
  *    Where is the tool? Now set only the shoulder (joint 1, axis y) to +π/2. Which way does the arm point?
  *
  * Use `rodrigues` from ./se3 for Rot(axis, q).
