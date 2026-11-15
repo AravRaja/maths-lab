@@ -163,8 +163,10 @@ function Comb({ target, muQ, sdQ, r }: { target: IsTargetName; muQ: number; sdQ:
       ctx.font = "11px ui-monospace, SFMono-Regular, Menlo, monospace";
       for (let v = Math.ceil(lo); v <= hi; v++) {
         if ((v - Math.ceil(lo)) % 2) continue;
-        ctx.textAlign = "center";
-        ctx.fillText(String(v), sx(v), height - 6);
+        const x = sx(v);
+        // Edge labels align inward so the minus sign isn't clipped by the canvas.
+        ctx.textAlign = x < 14 ? "left" : x > width - 14 ? "right" : "center";
+        ctx.fillText(String(v), Math.min(width - 2, Math.max(2, x)), height - 6);
       }
       ctx.textAlign = "left";
       ctx.textBaseline = "top";

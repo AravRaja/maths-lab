@@ -243,7 +243,12 @@ function TwoGauss({ p, q }: { p: Normal; q: Normal }) {
       ctx.fillText("p solid · q dashed · p log(p/q) dotted", 6, 4);
       ctx.textBaseline = "alphabetic";
       ctx.textAlign = "center";
-      for (let v = -6; v <= 6; v += 2) ctx.fillText(String(v), sx(v), height - 6);
+      for (let v = -6; v <= 6; v += 2) {
+        const x = sx(v);
+        // Edge labels align inward so the minus sign isn't clipped by the canvas.
+        ctx.textAlign = x < 14 ? "left" : x > width - 14 ? "right" : "center";
+        ctx.fillText(String(v), Math.min(width - 2, Math.max(2, x)), height - 6);
+      }
       ctx.textAlign = "left";
     },
     { animate: false },
