@@ -45,7 +45,7 @@ export function conditionalPath(x0: number[], x1: number[], t: number, sigmaMin:
  *  - Differentiate. Does the answer depend on t? What does that say about the speed a particle moves
  *    along its line?
  *  - The network will never see x₀ and x₁, only x_t and t. Many different (x₀, x₁) pairs pass through
- *    the same x_t at the same t. What single number should the network predict there, then? (This is
+ *    the same x_t at the same t. What single vector should the network predict there, then? (This is
  *    why the loss works at all; keep it in mind for milestone 4.)
  */
 export function conditionalVelocity(x0: number[], x1: number[], sigmaMin: number): number[] {

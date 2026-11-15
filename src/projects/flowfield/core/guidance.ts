@@ -16,7 +16,8 @@ const FILE = "src/projects/flowfield/core/guidance.ts";
  *  - What do w = 0 and w = 1 give? What happens for w > 1, geometrically, with two arrows drawn
  *    from the same point?
  *  - For a diffusion model the velocity is an affine function of the score ∇ log p_t. Assuming that,
- *    show the guided field corresponds to sampling from something ∝ p_t(x | c)^w · p_t(x)^(1 − w).
+ *    show the guided field's score is the score of something ∝ p_t(x | c)^w · p_t(x)^(1 − w)
+ *    (true at each t; the final samples only approximately follow it).
  *    Use Bayes to rewrite it with p_t(c | x): why is it called "classifier-free"?
  *  - Predict: as w grows past 1, do samples get more varied or less?
  */

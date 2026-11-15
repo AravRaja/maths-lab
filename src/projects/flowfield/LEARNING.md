@@ -46,7 +46,7 @@ The lines cross, so they are not the flow of any single velocity field. Averagin
 - Take x on the line from x₀ to x₁ at time t. Solve the path equation for x₀ and substitute into your M1 velocity. You now have u_t(x | x₁), the velocity at *position* x of the line that ends at x₁. Check that it points from x towards x₁, roughly, and how its size behaves as t → 1.
 - The marginal field is the posterior-weighted average u_t(x) = Σᵢ wᵢ u_t(x | x₁⁽ⁱ⁾) with wᵢ = p_t(x | x₁⁽ⁱ⁾) / Σⱼ p_t(x | x₁⁽ʲ⁾). Show the normalising constants of the Gaussians cancel, so wᵢ is a softmax of a quadratic in x.
 - Why this is the right field: it satisfies the continuity equation ∂p_t/∂t + ∇·(p_t u_t) = 0 because each conditional field does for its own Gaussian, and the equation is linear in (p, p·u). Write out that one-line argument.
-- Numerics: far from the data every exponent is very negative. How do you compute the softmax without 0/0? (Subtract the max.)
+- Numerics: far from the data every exponent is very negative. How do you compute the softmax without 0/0, and why does your fix not change the answer?
 
 **Write**: `marginalVelocity` in `src/projects/flowfield/core/marginal.ts`.
 
@@ -65,7 +65,7 @@ Sampling is solving the ODE dx/dt = v(x, t) from t = 0 to 1. Forward Euler is th
 
 **Derive on paper**
 - Euler from the first-order Taylor expansion. Local error per step, and why the global error after N steps is O(1/N).
-- For dx/dt = −x, x(0) = 1: exact x(1), and Euler's answer (1 − 1/N)^N. Expand log of the ratio to show the gap is about e⁻¹/(2N).
+- For dx/dt = −x, x(0) = 1: write the exact x(1) and Euler's answer after N steps in closed form. Expand the log of their ratio to show the gap is about e⁻¹/(2N).
 - Two trajectories of a smooth ODE cannot cross. The straight lines of M1 cross all the time. So what do the trajectories of the marginal field look like where lines crossed?
 - Near t = 1 the marginal field has terms of size 1/σ_t. With step size Δt, when does Euler overshoot a data point instead of landing on it? (Think of dx/dt = −k(x − a) and the condition on kΔt.)
 
@@ -107,7 +107,7 @@ One network, several glyphs. Tell it which one, sometimes tell it nothing, and s
 **Derive on paper**
 - The context is a one-hot label c, or all zeros for "no context". With probability p_drop the training loop shows zeros instead of the label, so the same network learns v(x, t | c) and v(x, t | ∅).
 - Classifier-free guidance (Ho and Salimans, 2022): ṽ = v(x, t | ∅) + w (v(x, t | c) − v(x, t | ∅)). Draw the two arrows from one point and the guided one for w = 0, 1, 2.
-- For Gaussian paths the velocity is an affine function of the score ∇ log p_t(x). Use that to show the guided field targets p_t(x | c)^w p_t(x)^(1−w), then use Bayes to write it as p_t(x | c) · p_t(c | x)^(w−1). This is why it sharpens: it multiplies in an implicit classifier, without ever training one.
+- For Gaussian paths the velocity is an affine function of the score ∇ log p_t(x). Use that to show the guided field's score is the score of p_t(x | c)^w p_t(x)^(1−w), then use Bayes to write it as p_t(x | c) · p_t(c | x)^(w−1). This is why it sharpens: it multiplies in an implicit classifier, without ever training one. (Caveat: this holds for the score at each t; the samples you get at t = 1 only approximately follow the tilted density.)
 - If p_drop = 0, which field is the network never trained on, and what will w ≠ 1 do?
 
 **Write**: `guidedVelocity` and `dropLabel` in `src/projects/flowfield/core/guidance.ts`.

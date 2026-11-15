@@ -274,10 +274,11 @@ export function ReacherSection() {
           L2 regression
         </Chip>
       </div>
-      <div className="flex min-h-11 items-center justify-between gap-3 rounded-xl border border-rule px-3">
+      {/* The whole 44px row is the switch's label, so the touch target is the row, not the 24px track. */}
+      <label className="flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl border border-rule px-3">
         <span className="text-sm">Replan every step, temporal ensemble</span>
         <AnimatedSwitch checked={ensemble} onCheckedChange={setEnsemble} disabled={!!cores.chunks} label="Temporal ensemble" />
-      </div>
+      </label>
       {cores.chunks && <CorePanel error={cores.chunks} />}
       <div className="grid grid-cols-2 gap-2">
         <Button variant="outline" disabled={!ready} onClick={() => void rollout()}>
