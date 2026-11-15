@@ -116,7 +116,7 @@ export function LineChart({
           <g key={`y${v}`}>
             <line x1={PAD.l} x2={W - PAD.r} y1={sy(v)} y2={sy(v)} stroke="var(--rule)" />
             <text x={PAD.l - 8} y={sy(v)} dy="0.32em" textAnchor="end" fontSize="11" fill="var(--ink-soft)">
-              {logY ? `1e${v}` : fmt(v)}
+              {logY ? (Number.isInteger(v) ? `1e${v}` : fmt(10 ** v)) : fmt(v)}
             </text>
           </g>
         ))}
@@ -144,7 +144,7 @@ export function LineChart({
           </text>
         )}
         {xLabel && (
-          <text x={W - PAD.r} y={H - PAD.b - 6} fontSize="11" textAnchor="end" fill="var(--ink-soft)">
+          <text x={W - PAD.r} y={H - PAD.b - 6} fontSize="11" textAnchor="end" fill="var(--ink-soft)" stroke="var(--paper)" strokeWidth={4} paintOrder="stroke" strokeLinejoin="round">
             {xLabel}
           </text>
         )}

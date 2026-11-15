@@ -47,7 +47,7 @@ export function CoreStatus({ cores, className }: { cores: CoreSpec[]; className?
                 <p className="truncate text-xs text-ink-soft">{r?.state === "broken" ? r.error : c.file}</p>
               </div>
               {href && (
-                <a href={href} className="type-narrow inline-flex min-h-11 shrink-0 items-center text-xs text-ink-soft underline underline-offset-4">
+                <a href={href} className="type-narrow inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center text-xs text-ink-soft underline underline-offset-4">
                   {c.milestone}
                 </a>
               )}
