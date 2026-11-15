@@ -1,59 +1,62 @@
-# lab-kit
+# maths-lab
 
-**Monochrome maths demos. Claude Code builds the scaffolding, I write the maths.**
+**Nine maths demos, from the SVD to a tiny vision-language-action model. I write the maths. Claude Code builds the rest.**
 
 <!-- screenshot / GIF: drop docs/hero.gif here -->
 
-The template every project in my lab is created from. It is a Next.js app with my tracker's look (black and white only, Archivo, phone-first), a dithered canvas hero, monochrome charts, Spectrum UI and shadcn components, and one rule:
+One Next.js site, nine projects, one per block of a 12-week maths syllabus for RL, world models, VLAs and robotics. Each project is a page with a live, monochrome signature visual: dithered fields, computation graphs, training runs streaming in from Web Workers.
 
-## The rule: you write the core
+## The rule: I write the core
 
-Every maths function lives in `src/core/` and starts as a **stub that throws `NotYoursYet`**. Each stub has a JSDoc spec: the maths, the signature and shapes, and what to derive on paper first. It never includes the answer.
+Every project's maths lives in `src/projects/<slug>/core/` and starts as a **stub that throws `NotYoursYet`**. Each stub has a spec: the maths, the signature and shapes, and what to derive on paper first. Never the answer.
 
-- **The app still runs.** Wherever a core is missing, the UI catches `NotYoursYet` and shows a *Yours to write* panel (file, function, what it does, link to the milestone in `LEARNING.md`) over a ghosted preview of what will appear.
-- **Tests say when it's right.** `src/core/__tests__/` checks the maths properly: closed forms, invariants, finite-difference gradient checks, convergence. They fail until the core is written.
-- **`<CoreStatus>`** probes every core with a tiny input and shows which are written.
+- **The page still runs.** Wherever a core is missing, the UI shows a *Yours to write* panel (file, function, what it does, a link to the milestone in that project's `LEARNING.md`) over a ghosted preview of what will appear.
+- **Tests decide.** `src/projects/<slug>/core/__tests__/` checks the maths properly: closed forms, invariants, finite-difference gradient checks, convergence. They fail until the core is written.
+- **The landing page counts.** Each card probes its project's cores and shows how many are written.
 
-Claude Code writes the UI, visualisation, workers and training loops. The cores are mine.
+Claude Code writes the UI, visualisation, workers, simulators and training loops. The cores are mine.
 
-## What's in the kit
+## The projects
 
-| Block | Where | What |
-| --- | --- | --- |
-| `NotYoursYet`, `isNotYoursYet`, `notYoursYet()` | `src/lib/kit/not-yours-yet.ts` | The stub error. Survives a Web Worker round trip. |
-| `useCore`, `<CoreBoundary>`, `withCore`, `<CorePanel>` | `src/components/kit/core-guard.tsx` | Render the panel when a core throws. |
-| `<YoursToWrite>`, `<Ghost>` | `src/components/kit/yours-to-write.tsx` | The panel and hatched placeholders. |
-| `<CoreStatus cores={CORES}>` | `src/components/kit/core-status.tsx` | Which cores are written. Registry in `src/core/index.ts`. |
-| `<PageShell>`, `<Hero>`, `<Section>`, `<Sheet>` | `src/components/kit/page-shell.tsx` | Wide-title hero, numbered sections. |
-| `<DitherField>` | `src/components/kit/dither-field.tsx` | Bayer-dithered animated noise. Pass `field` to dither your own function. |
-| `<LineChart>`, `<Histogram>`, `<Heatmap>` | `src/components/kit/charts.tsx` | No colour: stroke styles and greys. All take `ghost`. |
-| `useCanvas` | `src/components/kit/use-canvas.ts` | DPR-aware canvas, resize, pointer, rAF loop with fps cap. |
-| `exposeWorker`, `createWorkerClient`, `useWorker` | `src/lib/kit/worker.ts` | Typed worker calls with progress. |
-| `<Stat>`, `useToast()` | `src/components/kit/` | Rolling number tile, Spectrum toast stack. |
+| # | Project | Weeks | Maths |
+| --- | --- | --- | --- |
+| 01 | [Rank](src/projects/rank) · `/rank` | 1–2 | SVD, projections, low-rank approximation |
+| 02 | [Chain rule](src/projects/chainrule) · `/chainrule` | 3 | Autograd, backprop, gradient checking |
+| 03 | [Posterior](src/projects/posterior) · `/posterior` | 4 | Bayes' rule, Gaussian conditioning, Monte Carlo, KL |
+| 04 | [Bellman](src/projects/bellman) · `/bellman` | 5–6 | MDPs, value and policy iteration, TD, Q-learning |
+| 05 | [PPO arena](src/projects/ppo-arena) · `/ppo-arena` | 7 | Policy gradient, GAE, the clipped objective |
+| 06 | [Daydream](src/projects/daydream) · `/daydream` | 8–9 | ELBO, reparameterisation, latent dynamics |
+| 07 | [Flow field](src/projects/flowfield) · `/flowfield` | 9–10 | Conditional flow matching, ODE sampling |
+| 08 | [Jacobian](src/projects/jacobian) · `/jacobian` | 10–11 | SE(3), Jacobians, damped least squares IK, LQR, Kalman |
+| 09 | [Say and reach](src/projects/say-and-reach) · `/say-and-reach` | 12 | A tiny VLA: kinematics, IK, behaviour cloning, flow matching |
 
-Spectrum UI (`@spectrumui` registry): number-ticker, toast-stack, animated-switch, text-states, skeleton-reveal, tilt-card, beam-card (mono), morph-button, hold-to-confirm, kbd-key, orbital-letters, thinking-dots, code-block, inline-code, chart-empty.
-shadcn (base-nova, themed): button, card, tabs, slider, switch, toggle-group, badge, separator, tooltip, progress, skeleton.
-
-## Stack
-
-Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind v4 · Base UI + shadcn · Spectrum UI · motion · Vitest. No server: it deploys to Vercel free.
+Each project folder has a `LEARNING.md`: the milestones, what to derive on paper, which cores to write, and how to check them.
 
 ## Run locally
 
 ```sh
 npm ci
-npm run dev          # http://localhost:3000
-npm run test:cores   # the maths: fails until the cores are written
-npm run test:kit     # the kit itself: always passes
-npm run check        # lint + types + kit tests + build
+npm run dev                              # http://localhost:3000
+npm run test:cores                       # every project's maths: fails until the cores are written
+npx vitest run src/projects/<slug>/core  # one project's maths
+npm run test:kit                         # everything except the cores: always passes
+npm run check                            # lint + types + scaffolding tests + build
 ```
 
-Set `NEXT_PUBLIC_REPO_URL=https://github.com/<you>/<repo>` to make milestone links point at `LEARNING.md` on GitHub.
+## Layout
 
-## New project from the kit
-
-```sh
-gh repo create AravRaja/<name> --public --template AravRaja/lab-kit --clone
+```
+src/app/page.tsx              landing page
+src/app/<slug>/page.tsx       each project's page
+src/projects/<slug>/          each project: core/, core/__tests__/, components/, workers/, lib/, meta.ts, LEARNING.md
+src/projects/registry.ts      the nine meta.ts files, in syllabus order
+src/kit/                      shared kit: NotYoursYet, core guards, CoreStatus, canvas, workers, dithering, charts
+src/components/               shadcn + Spectrum UI components, themed black and white
+training/<slug>/              offline training scripts, if a project needs them
 ```
 
-Then follow [`TEMPLATE_GUIDE.md`](TEMPLATE_GUIDE.md).
+Building a project? Read [`BUILDERS.md`](BUILDERS.md).
+
+## Stack
+
+Next.js 16 (App Router, static export) · React 19 · TypeScript · Tailwind v4 · Base UI + shadcn · Spectrum UI · motion · Canvas 2D and Web Workers · Vitest. Strictly black and white, Archivo, phone-first. No server: it deploys to Vercel free.

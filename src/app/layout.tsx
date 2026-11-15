@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
-import { ToastProvider } from "@/components/kit/toast";
+import { ToastProvider } from "@/kit/components/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
@@ -11,8 +11,8 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  title: "Lab kit",
-  description: "Starter kit for monochrome maths demos. You write the core.",
+  title: "maths-lab",
+  description: "Nine maths demos, from the SVD to a tiny VLA. I write the maths; Claude Code builds the rest.",
 };
 
 export const viewport: Viewport = {

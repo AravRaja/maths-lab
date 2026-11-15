@@ -1,5 +1,5 @@
 {
-  "name": "lab-kit",
+  "name": "maths-lab",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,9 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:cores": "vitest run src/core",
+    "test:cores": "vitest run core/__tests__",
+    "test:kit": "vitest run --exclude \"**/core/__tests__/**\"",
     "test:watch": "vitest",
-    "test:kit": "vitest run src/lib src/components",
     "check": "npm run lint && tsc --noEmit && npm run test:kit && npm run build"
   },
   "dependencies": {
