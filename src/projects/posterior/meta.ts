@@ -1,11 +1,13 @@
 import type { ProjectMeta } from "../types";
+import { CORES } from "./core";
 
 export const meta: ProjectMeta = {
   slug: "posterior",
   title: "Posterior",
-  tagline: "A Bayes and Monte Carlo playground: beliefs update live as evidence arrives, π falls out of random darts, and two Gaussians measure how far apart they are.",
+  tagline:
+    "Belief sharpening flip by flip, a 2D Gaussian sliced by an observation, darts closing in on π with honest error bars, and two KLs that disagree about the same pair of distributions.",
   week: "Week 4",
   topic: "Bayes · Monte Carlo · KL",
-  status: "building",
-  cores: [],
+  status: "live",
+  cores: CORES,
 };
