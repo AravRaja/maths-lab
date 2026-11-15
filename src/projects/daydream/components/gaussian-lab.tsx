@@ -172,7 +172,8 @@ export function GaussianLab() {
     ctx.beginPath();
     ctx.arc(tx, ty, 12 + 2 * Math.sin(t * 3), 0, Math.PI * 2);
     ctx.stroke();
-    label(ctx, "target · drag me", tx + 16, ty + 4, { size: 9, level: 0.6 });
+    if (tx > W - 120) label(ctx, "target · drag me", tx - 16, ty + 4, { size: 9, level: 0.6, align: "right" });
+    else label(ctx, "target · drag me", tx + 16, ty + 4, { size: 9, level: 0.6 });
 
     if (t - lastView.current > 0.2) {
       lastView.current = t;

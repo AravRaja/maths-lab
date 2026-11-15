@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Eye, RotateCcw } from "lucide-react";
 import { grey, isNotYoursYet, type NotYoursYet } from "@/kit";
 import { CorePanel, CoreError } from "@/kit/components/core-guard";
@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { firstMissing } from "../lib/gate";
 import { forgetMind, setMind, useMind } from "../lib/store";
-import { SIDE, PIXELS } from "../lib/world";
+import { SIDE, PIXELS, render } from "../lib/world";
+import { decode, encode, type VaeWeights } from "../lib/vae";
 import type { handlers, VaeFrame } from "../workers/train.worker";
 import { paintFrame } from "./draw";
 import { Field, Pills, Readout, useLoopCanvas } from "./ui";
@@ -53,6 +54,20 @@ export function Cloud({ cloud, pos, shade, className, ghost }: { cloud: Float32A
   return <canvas ref={ref} className={className} role="img" aria-label="Where each frame lands in the 2-number latent space" />;
 }
 
+/** Six spread-out ball positions, used to rebuild the strip for a mind restored from this browser. */
+const STRIP_POS = [[0.25, 0.3], [0.7, 0.25], [0.5, 0.55], [0.2, 0.8], [0.8, 0.75], [0.45, 0.84]];
+
+function stripFrom(w: VaeWeights): Float32Array {
+  const n = STRIP_POS.length;
+  const out = new Float32Array(2 * n * PIXELS);
+  STRIP_POS.forEach(([x, y], k) => {
+    const f = render({ x, y });
+    out.set(f, k * PIXELS);
+    out.set(decode(w, encode(w, f).mu), (n + k) * PIXELS);
+  });
+  return out;
+}
+
 function Strip({ strip }: { strip: Float32Array | null }) {
   const ref = useLoopCanvas((ctx, { width: W, height: H }) => {
     ctx.fillStyle = grey(0);
@@ -91,6 +106,8 @@ export function VaeSection() {
   const [missing, setMissing] = useState<NotYoursYet | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const last = useRef<{ c: Float32Array; p: Float32Array } | null>(null);
+  const restoredStrip = useMemo(() => (mind.vae && mind.vae.shape.pixels === PIXELS ? stripFrom(mind.vae) : null), [mind.vae]);
+  const shownStrip = strip ?? restoredStrip;
   const worker = useWorker<typeof handlers>(() => new Worker(new URL("../workers/train.worker.ts", import.meta.url)));
 
   const train = () => {
@@ -205,7 +222,7 @@ export function VaeSection() {
       </div>
       <Sheet>
         <p className="type-narrow mb-2 text-xs tracking-[0.2em] text-ink-soft uppercase">Real (top) · reconstructed from 2 numbers (bottom)</p>
-        <Strip strip={strip} />
+        <Strip strip={shownStrip} />
       </Sheet>
     </div>
   );

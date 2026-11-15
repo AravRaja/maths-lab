@@ -117,9 +117,9 @@ export function DaydreamHero() {
       const status = !m.vae
         ? "no mind yet"
         : !m.dyn
-          ? "it can see · it can't imagine yet"
+          ? "sees · can't dream yet"
           : closed
-            ? `eyes closed · ${dreamer?.dreaming ?? 0} steps dreamt`
+            ? `eyes shut · ${dreamer?.dreaming ?? 0} steps`
             : "eyes open · watching";
       label(ctx, status, x1, by, { level: closed ? 0.95 : 0.45, size: 9 });
 

@@ -37,17 +37,23 @@ describe("m4 · gaussianNLLGrad", () => {
     }
   });
 
-  it("drives a learned variance to the squared error (gradient descent converges)", () => {
-    // Fit a single (m, s) to a fixed target by plain gradient descent using your gradient.
+  it("learns the variance you derived on paper (mean held fixed)", () => {
+    const z = [0.8, -0.3];
+    const m = [0, 0.2];
+    let s = [2, -3];
+    for (let k = 0; k < 3000; k++) {
+      const g = gaussianNLLGrad(z, m, s);
+      s = s.map((si, i) => si - 0.1 * g.dlogvar[i]);
+    }
+    expect(s[0]).toBeCloseTo(Math.log(0.8 ** 2), 4);
+    expect(s[1]).toBeCloseTo(Math.log(0.5 ** 2), 4);
+  });
+
+  it("pulls the mean onto the target (gradient descent converges)", () => {
     const z = [0.8];
     let m = [0];
-    let s = [0];
-    for (let k = 0; k < 4000; k++) {
-      const g = gaussianNLLGrad(z, m, s);
-      m = [m[0] - 0.05 * g.dmean[0] * Math.exp(s[0])];
-      s = [s[0] - 0.05 * g.dlogvar[0]];
-      if (Math.abs(z[0] - m[0]) < 0.05) break;
-    }
-    expect(m[0]).toBeCloseTo(0.8, 1);
+    const s = [Math.log(0.5)];
+    for (let k = 0; k < 2000; k++) m = [m[0] - 0.05 * gaussianNLLGrad(z, m, s).dmean[0]];
+    expect(m[0]).toBeCloseTo(0.8, 4);
   });
 });
